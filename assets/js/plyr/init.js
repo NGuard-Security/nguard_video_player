@@ -1,9 +1,9 @@
 let src = request.getParameter('src');
 let poster = request.getParameter('poster');
 
-let autoplay = request.getParameter('autoplay');
-let controls = request.getParameter('controls');
-let loop = request.getParameter('loop');
+let autoplay = request.getParameter('autoplay') || 0;
+let controls = request.getParameter('controls') || 1;
+let loop = request.getParameter('loop') || 0;
 
 let attr = "";
 let options = {};
