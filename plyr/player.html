@@ -1,10 +1,3 @@
-<!------------------------------------
- * 
- * Video Player (plyr/player.html)
- * Made by SSKATE
- *  
------------------------------------->
-
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -17,66 +10,12 @@
         .plyr { height: 100vh !important; }
         video { object-fit: cover; }
     </style>
-    <link rel="stylesheet" href="https://unpkg.com/plyr@3/dist/plyr.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/plyr/3.7.2/plyr.min.css">
 </head>
 <body>
     <div class="container"></div>
-    <script type="text/javascript">  
-        const Request = function() {  
-            this.getParameter = function(name) {  
-                var rtnval = '';  
-                var nowAddress = unescape(location.href);  
-                var parameters = (nowAddress.slice(nowAddress.indexOf('?') + 1,  
-                        nowAddress.length)).split('&');  
-                for (var i = 0; i < parameters.length; i++) {  
-                    var varName = parameters[i].split('=')[0];  
-                    if (varName.toUpperCase() == name.toUpperCase()) {  
-                        rtnval = parameters[i].split('=')[1];  
-                        break;  
-                    }  
-                }  
-                return rtnval;  
-            }  
-        }  
-        const request = new Request();  
-    </script>
-    <script src="https://cdn.polyfill.io/v3/polyfill.min.js"></script>
-    <script src="https://unpkg.com/plyr@3"></script>
-    <script>
-      let src = request.getParameter('src');
-      let poster = request.getParameter('poster');
-      
-      let autoplay = request.getParameter('autoplay');
-      let controls = request.getParameter('controls');
-      let loop = request.getParameter('loop');
-      
-      let attr = "";
-      let options = {};
-      
-      if (autoplay == 1) {
-        attr += "autoplay muted ";
-        options = { controls: "" };
-      }
-      
-      if (controls == 0) {
-        options = { controls: "" };
-      }
-      
-      if (loop == 1) {
-        attr += "loop";
-      }
-      
-      document.querySelector('#container').innerHTML = `
-        <video crossorigin playsinline poster="${poster}" ${attr}>
-                <source src="${src}" type="video/mp4" size="1080">
-
-                <a href="${src}" download>Download</a>
-        </video>
-      `
-    </script>
-    <script>
-        const player = new Plyr('video', options);
-        window.player = player;
-    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/plyr/3.7.2/plyr.min.js"></script>
+    <script src="/assets/js/common/request.js"></script>
+    <script src="/assets/js/plyr/init.js"></script>
 </body>
 </html>
