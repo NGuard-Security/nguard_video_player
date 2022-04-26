@@ -8,12 +8,14 @@ let loop = request.getParameter('loop') || 0;
 let attr = "";
 let options = {};
 
-if (autoplay == 1) {
-  attr += "autoplay muted ";
+if (controls == 0) {
   options = { controls: "" };
+} else {
+  attr += "controls ";
 }
 
-if (controls == 0) {
+if (autoplay == 1) {
+  attr += "autoplay muted ";
   options = { controls: "" };
 }
 
