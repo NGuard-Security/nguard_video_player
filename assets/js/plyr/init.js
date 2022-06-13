@@ -24,7 +24,7 @@ if (loop == 1) {
 }
 
 document.querySelector('.container').innerHTML = `
-  <video crossorigin playsinline poster="${poster}" ${attr}>
+  <video crossorigin="anonymous" playsinline poster="${poster}" ${attr}>
           <source src="${src}" type="video/mp4" size="1080">
 
           <a href="${src}" download>Download</a>
