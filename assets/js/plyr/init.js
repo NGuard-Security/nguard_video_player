@@ -1,9 +1,10 @@
-let src = request.getParameter('src');
-let poster = request.getParameter('poster');
+let params = Object.fromEntries(new URLSearchParams(location.search).entries());
 
-let autoplay = request.getParameter('autoplay') || 0;
-let controls = request.getParameter('controls') || 1;
-let loop = request.getParameter('loop') || 0;
+let { src, poster } = params;
+
+let autoplay = params.autoplay || 0;
+let controls = params.controls || 1;
+let loop = params.loop || 0;
 
 let attr = "";
 let options = {};
@@ -23,13 +24,13 @@ if (loop == 1) {
   attr += "loop";
 }
 
-document.querySelector('.container').innerHTML = `
+document.querySelector(".container").innerHTML = `
   <video crossorigin="anonymous" playsinline poster="${poster}" ${attr}>
-          <source src="${src}" type="video/mp4" size="1080">
+    <source src="${src}" type="video/mp4" size="1080">
 
-          <a href="${src}" download>Download</a>
+    <a href="${src}" download>Download</a>
   </video>
-`
+`;
 
-const player = new Plyr('video', options);
+const player = new Plyr("video", options);
 window.player = player;
