@@ -1,11 +1,12 @@
 {
   "name": "nguard_video",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "main": "src/index.ts",
   "scripts": {
     "lint": "eslint src/**/*.ts",
-    "start": "ts-node .",
+    "build": "tsc -p .",
+    "start": "yarn build && node dist/",
     "dev": "nodemon --watch src/ --ext ts,tsx,json --exec ts-node ."
   },
   "dependencies": {
@@ -27,7 +28,6 @@
     "jose": "^4.14.4",
     "morgan": "~1.9.1",
     "node-html-parser": "^6.1.9",
-    "ts-node": "^10.4.0",
     "typescript": "^4.5.5",
     "xml2js": "^0.6.2"
   },
