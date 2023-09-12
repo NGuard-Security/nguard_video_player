@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Youtube Player by Issac_</title>
+
+        <style>
+          html, body {
+            margin: 0; padding: 0; overflow: hidden;
+            background: black;
+          }
+
+          iframe {
+            height: 100vh;
+            width: 100vw;
+          }
+        </style>
+    </head>
+
+    <body>
+        <div id="player"></div>
+      
+        <script src="/assets/js/logger.js"></script>
+      
+        <script>
+            const tag = document.createElement('script')
+            tag.src = "https://www.youtube.com/iframe_api"
+          
+            const youtubeScript = document.getElementsByTagName('script')[0]
+            youtubeScript.parentNode.insertBefore(tag, youtubeScript)
+          
+            let player = {}
+          
+            function onYouTubeIframeAPIReady() {
+              player = new YT.Player('player', {
+                height: '100%',
+                width: '100%',
+                videoId: '<%= videoId %>',
+                events: {
+                  'onReady': onPlayerReady,
+                  'onStateChange': onPlayerStateChange
+                },
+                playerVars: {
+                  'autoplay': 1,
+                  'playsinline': 1
+                }
+              })
+            }
+      
+            function onPlayerReady(event) {
+              Logger.debug("Event Received - onPlayerReady")
+              
+              event.target.playVideo()
+              event.target.setPlaybackQuality("highres")
+            }
+
+            function onPlayerStateChange(event) {
+              Logger.debug("Event Received - onPlayerStateChange :", event.data)
+
+              if (event.data == YT.PlayerState.UNSTARTED) {
+                Logger.debug("Failed to Autoplay - Trying to muted-play...")
+                
+                event.target.mute()
+                event.target.playVideo()
+                
+                if (parent != self) {
+                  alert("오디오가 활성화되지 않았습니다.\n\n새로고침하고 동영상이 로드되기 전에 화면을 빠르게 터치하세요.")
+                }
+              } else if (event.data == YT.PlayerState.ENDED) {
+                event.target.playVideo()
+              } else if (event.data == YT.PlayerState.PLAYING) {
+                event.target.setPlaybackQuality("highres")
+              }
+            }
+          
+            function stopVideo() {
+              player.stopVideo()
+            }
+        </script>
+    </body>
+</html>

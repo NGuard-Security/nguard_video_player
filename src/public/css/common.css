@@ -1,0 +1,28 @@
+/* Reset */
+@import url('reset.css');
+
+/* Fonts */
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/variable/pretendardvariable-dynamic-subset.css');
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/variable/pretendardvariable-std-dynamic-subset.css');
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/variable/pretendardvariable-jp-dynamic-subset.css');
+
+html {
+  scroll-behavior: smooth;
+}
+
+html,
+html[lang='ko'] {
+  /* Korean Fonts */
+  font-family: 'Pretendard Variable' !important;
+}
+
+html[lang='en'],
+html[lang='vi'] {
+  /* English / Vietnamese (Latin) Fonts */
+  font-family: 'Pretendard Std Variable' !important;
+}
+
+html[lang='ja'] {
+  /* Japanese Fonts */
+  font-family: 'Pretendard JP Variable' !important;
+}
