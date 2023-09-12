@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <title>Naver Cafe Video Player (Experimental) by Issac_</title>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/videojs-plus@1.6.9/dist/videojs-plus.min.css"
+      rel="stylesheet"
+    />
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/videojs-plus@1.6.9/dist/plugins/full-window-toggle/style.css"
+      rel="stylesheet"
+    />
+
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background: black;
+      }
+
+      video-js,
+      .video-js {
+        display: block;
+        height: 100vh;
+        width: 100vw;
+      }
+    </style>
+  </head>
+
+  <body>
+    <video-js autoplay controls playsinline loop></video-js>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/video.js@7.5.4/dist/video.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/videojs-plus@1.6.9/dist/videojs-plus.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/videojs-plus@1.6.9/dist/plugins/full-window-toggle/index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/videojs-plus@1.6.9/dist/plugins/quality/index.js"></script>
+
+    <script src="/assets/js/logger.js"></script>
+    <script src="/assets/js/imageManager.js"></script>
+
+    <script>
+      const video = videojs(document.querySelector('video-js'))
+
+      const fetchVideo = async () => {
+        Logger.debug('[Video Player]', 'Fetching video file...')
+
+        const { data: v } = await axios.get(
+          '/api/naverVideo?clubId=<%= clubId %>&clubName=<%= clubName %>&articleId=<%= articleId %>&index=<%= index %>',
+        )
+
+        document.querySelector('video-js').poster = v.data.poster
+
+        video.on('quality', () => {
+          if (v.article.author || v.article.title) {
+            document.title = `${v.article.author} - ${v.article.title} : ${document.title}`
+          }
+
+          navigator.mediaSession.metadata = new MediaMetadata({
+            title: v.article.title,
+            artist: v.article.author,
+            artwork: [
+              {
+                src: cropImage(v.data.poster, '1080x1080'),
+                sizes: '1080x1080',
+                type: 'image/jpg',
+              },
+            ],
+          })
+
+          setTimeout(function playVideo() {
+            Logger.debug('[Video Player]', 'Trying to play...')
+
+            try {
+              document.querySelector('video').play()
+
+              if (document.querySelector('video').paused) {
+                Logger.debug(
+                  '[Video Player]',
+                  'Trying to muted-play...',
+                )
+                document.querySelector('video').muted = true
+                document.querySelector('video').play()
+                if (parent != self) {
+                  alert(
+                    '오디오가 활성화되지 않았습니다.\n\n새로고침하고 동영상이 로드되기 전에 화면을 빠르게 터치하세요.',
+                  )
+                }
+              }
+            } catch (e) {
+              Logger.error('[Video Player]', 'Failed. Retry...')
+              Logger.error(e)
+              playVideo()
+            }
+          })
+        })
+
+        const sources = []
+
+        v.data.sources.forEach((x, index) => {
+          sources.push({
+            default: index + 1 == v.data.sources.length,
+            label: x.res,
+            sources: [
+              {
+                src: x.url,
+                type: x.mime_type || 'video/mp4',
+              },
+            ],
+          })
+        })
+
+        video.setQualities(
+          sources,
+          sources.findIndex(i => i.default),
+        )
+      }
+
+      document.addEventListener('DOMContentLoaded', async () => {
+        await fetchVideo()
+      })
+    </script>
+  </body>
+</html>

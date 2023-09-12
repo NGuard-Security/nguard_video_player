@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <title>Naver Cafe Video Player (Experimental) by Issac_</title>
+
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background: black;
+      }
+
+      #player {
+        height: 100vh;
+        width: 100vw;
+      }
+    </style>
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.flowplayer.com/releases/native/3/stable/style/flowplayer.css"
+    />
+  </head>
+
+  <body>
+    <div id="player"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <script src="https://cdn.flowplayer.com/releases/native/3/stable/default/flowplayer.min.js"></script>
+    <script src="//cdn.flowplayer.com/releases/native/3/stable/plugins/airplay.min.js"></script>
+
+    <script src="/assets/js/logger.js"></script>
+    <script src="/assets/js/imageManager.js"></script>
+
+    <script>
+      window.__FLOWPLAYER_TOKEN =
+        'eyJraWQiOiJQSjdNSjh5dzM3Qm8iLCJ0eXAiOiJKV1QiLCJhbGciOiJFUzI1NiJ9.eyJjIjoie1wiYWNsXCI6NixcImlkXCI6XCJQSjdNSjh5dzM3Qm9cIn0iLCJpc3MiOiJGbG93cGxheWVyIn0.VJHHneaGSGDWoYr46ScADg5BGA0HAr8S3XTJ2fgLo9-NtZ8pS26XtaQkc9oBHWidlaiixoh8ErwdrjMOo2QBKw'
+    </script>
+
+    <script>
+      const fetchVideo = async () => {
+        Logger.debug('[Video Player]', 'Fetching video file...')
+
+        const { data: v } = await axios.get(
+          '/api/naverVideo?clubId=<%= clubId %>&clubName=<%= clubName %>&articleId=<%= articleId %>&index=<%= index %>',
+        )
+
+        const source = v.data.sources.pop()
+
+        const video = flowplayer('#player', {
+          loop: true,
+          autoplay: true,
+          src: source.url,
+          poster: v.data.poster,
+        })
+
+        document.title = `${v.article.author} - ${v.article.title} : ${document.title}`
+
+        navigator.mediaSession.metadata = new MediaMetadata({
+          title: v.article.title,
+          artist: v.article.author,
+          artwork: [
+            {
+              src: cropImage(v.data.poster, '1080x1080'),
+              sizes: '1080x1080',
+              type: 'image/jpg',
+            },
+          ],
+        })
+
+        setTimeout(function playVideo() {
+          Logger.debug('[Video Player]', 'Trying to play...')
+
+          try {
+            video.play()
+
+            if (video.paused) {
+              Logger.debug(
+                '[Video Player]',
+                'Trying to muted-play...',
+              )
+              video.muted = true
+              video.play()
+
+              if (parent != self) {
+                alert(
+                  '오디오가 활성화되지 않았습니다.\n\n새로고침하고 동영상이 로드되기 전에 화면을 빠르게 터치하세요.',
+                )
+              }
+            }
+          } catch (e) {
+            Logger.error('[Video Player]', 'Failed. Retry...')
+            Logger.error(e)
+            playVideo()
+          }
+        })
+      }
+
+      document.addEventListener('DOMContentLoaded', async () => {
+        await fetchVideo()
+      })
+    </script>
+  </body>
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <title>Naver Cafe Video Player (Experimental) by Issac_</title>
+
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background: black;
+      }
+
+      #player {
+        height: 100vh;
+        width: 100vw;
+      }
+    </style>
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.flowplayer.com/releases/native/3/stable/style/flowplayer.css"
+    />
+  </head>
+
+  <body>
+    <div id="player"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jwplayer.com/libraries/x13vJLkP.js"></script>
+
+    <script src="/assets/js/logger.js"></script>
+    <script src="/assets/js/imageManager.js"></script>
+
+    <script>
+      const fetchVideo = async () => {
+        Logger.debug('[Video Player]', 'Fetching video file...')
+
+        const { data: v } = await axios.get(
+          '/api/naverVideo?clubId=<%= clubId %>&clubName=<%= clubName %>&articleId=<%= articleId %>&index=<%= index %>',
+        )
+
+        const sources = []
+
+        v.data.sources.forEach(x => {
+          sources.push({
+            file: x.url,
+            label: x.res,
+          })
+        })
+
+        const video = jwplayer('player').setup({
+          playlist: [
+            {
+              title: `${v.article.author} - ${v.article.title}`,
+              sources: sources,
+              image: v.data.poster,
+            },
+          ],
+          width: '100vw',
+          height: '100vh',
+        })
+
+        video.on('ready', () => {
+          document.title = `${v.article.author} - ${v.article.title} : ${document.title}`
+
+          navigator.mediaSession.metadata = new MediaMetadata({
+            title: v.article.title,
+            artist: v.article.author,
+            artwork: [
+              {
+                src: cropImage(v.data.poster, '1080x1080'),
+                sizes: '1080x1080',
+                type: 'image/jpg',
+              },
+            ],
+          })
+
+          const playInterval = setInterval(() => {
+            Logger.debug('[Video Player]', 'Trying to play...')
+
+            try {
+              document.querySelector('.jw-video').loop = true
+              document.querySelector('.jw-video').play()
+
+              if (document.querySelector('.jw-video').paused) {
+                Logger.debug(
+                  '[Video Player]',
+                  'Trying to muted-play...',
+                )
+
+                document.querySelector('.jw-video').muted = true
+                document.querySelector('.jw-video').play()
+
+                if (parent != self) {
+                  alert(
+                    '오디오가 활성화되지 않았습니다.\n\n새로고침하고 동영상이 로드되기 전에 화면을 빠르게 터치하세요.',
+                  )
+                }
+              } else {
+                clearInterval(playInterval)
+              }
+            } catch (e) {
+              Logger.error('[Video Player]', 'Failed. Retry...')
+              Logger.error(e)
+              clearInterval(playInterval)
+            }
+          })
+        })
+      }
+
+      document.addEventListener('DOMContentLoaded', async () => {
+        await fetchVideo()
+      })
+    </script>
+  </body>
+</html>
