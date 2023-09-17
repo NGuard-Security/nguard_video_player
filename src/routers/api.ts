@@ -37,7 +37,7 @@ router.get(
         }).filter(x => x)
 
         const videoDataModule = videoDataModules[req.query.index ? Number(req.query.index): 0]
-        if (videoDataModule.type == 'v2_video') {
+        if (videoDataModule?.type == 'v2_video') {
             const { data: videos } = await axios.get(
                 'https://apis.naver.com/rmcnmv/rmcnmv/vod/play/v2.0/' +
                 videoDataModule.data.vid +
@@ -77,7 +77,7 @@ router.get(
                 status: 200,
                 success: true
             })
-        } else if (videoDataModule.type == 'v2_oembed') {
+        } else if (videoDataModule?.type == 'v2_oembed') {
             const oembedSrc = articleElem.querySelector('iframe')?.getAttribute('src')
 
             if (oembedSrc) {
@@ -115,22 +115,13 @@ router.get(
                     success: true
                 })
             }
-        } else if (videoDataModule.type == "") {
+        } else {
             return res.status(404).send({
                 id: null,
                 data: {},
                 article: {},
                 message: '존재하지 않는 게시글입니다.',
                 status: 404,
-                success: false
-            })
-        } else {
-            return res.status(400).send({
-                id: null,
-                data: {},
-                article: {},
-                message: '지원되지 않는 타입의 영상 데이터입니다.',
-                status: 400,
                 success: false
             })
         }

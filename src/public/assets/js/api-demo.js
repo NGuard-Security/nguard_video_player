@@ -23,7 +23,7 @@ async function runDemo() {
   } catch (e) {
     document.querySelector('#result').style.whiteSpace = 'pre-wrap'
     document.querySelector('#result').innerText =
-      JSON.stringify(e.response.data, null, INDENT_SIZE) || e.message || e.toString()
+      JSON.stringify(e?.response?.data, null, INDENT_SIZE) || e?.message || e.toString()
   }
 }
 
@@ -43,7 +43,7 @@ async function oembedDemo() {
   } catch (e) {
     document.querySelector('#oembed_result').style.whiteSpace = 'pre-wrap'
     document.querySelector('#oembed_result').innerText =
-      JSON.stringify(e.response.data, null, INDENT_SIZE).replace(/[\u00A0-\u9999<>\&]/g, i => '&#'+i.charCodeAt(0)+';') || e.message || e.toString()
+      JSON.stringify(e?.response?.data, null, INDENT_SIZE) || e?.message || e.toString()
   }
 }
 
