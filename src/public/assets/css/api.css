@@ -1,0 +1,65 @@
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/variable/pretendardvariable-dynamic-subset.css");
+
+html {
+    scroll-behavior: smooth;
+    font-family: "Pretendard Variable", sans-serif !important;
+}
+
+::selection {
+    background: rgba(166, 175, 189, .3) !important;
+    color: #222222 !important;
+}
+
+.uk-accordion-title {
+    color: #222222 !important;
+}
+
+.bold {
+    font-weight: bold !important;
+}
+
+.text-light {
+    font-weight: 300 !important;
+}
+
+.logo {
+    font-size: 1.2rem !important;
+}
+
+.align-right {
+    align-items: right !important;
+}
+
+.uk-callout {
+    padding: 15px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border: 1px solid #eee;
+    border-left-width: 5px;
+    border-radius: 3px;
+}
+
+.uk-callout h4 {
+    margin-top: 0;
+    margin-bottom: 5px;
+}
+
+.uk-callout-primary {
+    border-left-color: #007bff;
+}
+
+.uk-callout-danger {
+    border-left-color: #dc3545;
+}
+
+.uk-callout-warning {
+    border-left-color: #ffc107;
+}
+
+.uk-callout-info {
+    border-left-color: #17a2b8;
+}
+
+.uk-callout-secondary {
+    border-left-color: #222222;
+}

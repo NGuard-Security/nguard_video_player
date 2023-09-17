@@ -1,10 +1,110 @@
 <!DOCTYPE html>
 <html lang="ko">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
-<body>
-  Hello World!
-</body>
+    <head>
+        <meta charset="utf-8" />
+        <title>네이버 카페 동영상 플레이어 API</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.16.26/dist/css/uikit.min.css" />
+        <link rel="stylesheet" href="/assets/css/api.css">
+    </head>
+
+    <body>
+        <header>
+            <nav class="uk-container uk-navbar">
+                <div class="uk-navbar-left">
+                    <ul class="uk-navbar-nav">
+                        <li class="uk-active">
+                            <a class="logo">Naver Cafe Player API</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <div class="uk-section uk-section-secondary uk-light">
+            <div class="uk-container">
+                <div class="uk-flex-left" style="text-align: left;">
+                    <h3>네이버 카페 동영상 플레이어 API</h3>
+                    <p>네이버 카페 동영상을 쉽게 추출하고 외부 사이트에서 재생할 수 있어요.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="uk-section uk-section-light" style="padding-top: 40px; padding-bottom: 40px;">
+            <div class="uk-container">
+                <h3>Restful API</h3>
+                <div class="uk-margin" uk-margin>
+                    <div uk-form-custom="target: true">
+                        <input class="uk-input uk-form-width-large" type="text" id="clubId" placeholder="clubId (카페 아이디)" autocomplete="off" />
+                    </div>
+                    <div uk-form-custom="target: true">
+                        <input class="uk-input uk-form-width-large" type="text" id="clubName" placeholder="clubName (카페 문자열로 된 아이디: clubId가 없으면 required)" autocomplete="off" />
+                    </div>
+                    <div uk-form-custom="target: true">
+                        <input class="uk-input uk-form-width-large" type="text" id="articleId" placeholder="articleId (글 아이디)" autocomplete="off" />
+                    </div>
+                    <div uk-form-custom="target: true">
+                        <input class="uk-input uk-form-width-large" type="text" id="index" placeholder="index (영상 순서)" autocomplete="off" value="0" required/>
+                    </div>
+                    <button class="uk-button uk-button-secondary" type="button" id="request">요청</button>
+                </div>
+                <div class="uk-callout uk-callout-secondary">
+                    GET <a style="text-decoration: underline;" target="_blank" href="https://video.sskate.me/api/naverVideo">https://video.sskate.me/api/naverVideo</a>
+                </div>
+                <div class="uk-callout uk-callout-secondary" id="result" style="font-size: 0.8em;">
+                    '요청' 버튼을 눌러주세요.
+                </div>
+            </div>
+        </div>
+
+        <div class="uk-section uk-section-light" style="padding-top: 40px; padding-bottom: 40px;">
+            <div class="uk-container">
+                <h3>oEmbed API</h3>
+                <div class="uk-margin" uk-margin>
+                    <div uk-form-custom="target: true">
+                        <input class="uk-input uk-form-width-large" type="url" id="url" placeholder="url (카페 URL - PC에서 URL 복사한 링크)" autocomplete="off" />
+                    </div>
+                    <div uk-form-custom="target: true">
+                        <input class="uk-input uk-form-width-large" type="text" id="format" placeholder="format" autocomplete="off" value="json" readonly/>
+                    </div>
+                    <div uk-form-custom="target: true">
+                        <input class="uk-input uk-form-width-large" type="text" id="oembed_index" placeholder="index (영상 순서)" autocomplete="off" value="0" required/>
+                    </div>
+                    <button class="uk-button uk-button-secondary" type="button" id="oembed_request">요청</button>
+                </div>
+                <div class="uk-callout uk-callout-secondary">
+                    GET <a style="text-decoration: underline;" target="_blank" href="https://video.sskate.me/oembed">https://video.sskate.me/oembed</a>
+                </div>
+                <div class="uk-callout uk-callout-secondary" id="oembed_result" style="font-size: 0.8em;">
+                    '요청' 버튼을 눌러주세요.
+                </div>
+            </div>
+        </div>
+
+        <div class="uk-section uk-section-muted">
+            <div class="uk-container">
+                <h3>Q&A</h3>
+                <ul uk-accordion>
+                    <li>
+                        <a class="uk-accordion-title" href="#">제대로 영상이 불러와 지지 않아요.</a>
+                        <div class="uk-accordion-content">
+                            <p>네이버 카페를 리버스 엔지니어링한 비공식 API로, 네이버 카페가 업데이트되면 언제든지 작동을 멈출 수 있습니다.</p>
+                        </div>
+                    </li>
+                    <li>
+                        <a class="uk-accordion-title" href="#">응답이 오래 걸려요.</a>
+                        <div class="uk-accordion-content">
+                            <p>네이버 카페 서버에 그때그때 요청해서 데이터를 가져오므로 인터넷 상황에 따라 응답이 느릴 수 있습니다.</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <script src="/assets/js/api-demo.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/axios@1.5.0/dist/axios.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/uikit@3.16.26/dist/js/uikit.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/gh/douglascrockford/JSON-js/json2.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/uikit@3.16.26/dist/js/uikit-icons.min.js"></script>
+    </body>
 </html>
