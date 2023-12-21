@@ -44,7 +44,7 @@
                   'onReady': onPlayerReady,
                   'onStateChange': onPlayerStateChange
                 },
-                playerVars: Object.assign(playerVars, { autoplay: 0, loop: 0 }) // loop과 autoplay는 커스텀하여 진행
+                playerVars: {...playerVars, ...{ autoplay: 0, loop: 0 }} // loop과 autoplay는 커스텀하여 진행
               })
             }
 
