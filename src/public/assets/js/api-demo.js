@@ -25,11 +25,17 @@ async function runDemo() {
     NProgress.inc()
 
     document.querySelector('#result').style.whiteSpace = 'pre-wrap'
-    document.querySelector('#result').innerText = JSON.stringify(response, null, INDENT_SIZE)
+    document.querySelector('#result').innerText = JSON.stringify(
+      response,
+      null,
+      INDENT_SIZE,
+    )
   } catch (e) {
     document.querySelector('#result').style.whiteSpace = 'pre-wrap'
     document.querySelector('#result').innerText =
-      JSON.stringify(e?.response?.data, null, INDENT_SIZE) || e?.message || e.toString()
+      JSON.stringify(e?.response?.data, null, INDENT_SIZE) ||
+      e?.message ||
+      e.toString()
   }
 
   NProgress.done()
@@ -52,12 +58,17 @@ async function oembedDemo() {
 
     NProgress.inc()
 
-    document.querySelector('#oembed_result').style.whiteSpace = 'pre-wrap'
-    document.querySelector('#oembed_result').innerText = JSON.stringify(response, null, INDENT_SIZE)
-  } catch (e) {
-    document.querySelector('#oembed_result').style.whiteSpace = 'pre-wrap'
+    document.querySelector('#oembed_result').style.whiteSpace =
+      'pre-wrap'
     document.querySelector('#oembed_result').innerText =
-      JSON.stringify(e?.response?.data, null, INDENT_SIZE) || e?.message || e.toString()
+      JSON.stringify(response, null, INDENT_SIZE)
+  } catch (e) {
+    document.querySelector('#oembed_result').style.whiteSpace =
+      'pre-wrap'
+    document.querySelector('#oembed_result').innerText =
+      JSON.stringify(e?.response?.data, null, INDENT_SIZE) ||
+      e?.message ||
+      e.toString()
   }
 
   NProgress.done()
@@ -67,4 +78,6 @@ document.addEventListener('DOMContentLoaded', NProgress.start)
 window.addEventListener('load', NProgress.done)
 
 document.querySelector('#request').addEventListener('click', runDemo)
-document.querySelector('#oembed_request').addEventListener('click', oembedDemo)
+document
+  .querySelector('#oembed_request')
+  .addEventListener('click', oembedDemo)

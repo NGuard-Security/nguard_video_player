@@ -4,7 +4,7 @@
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Youtube Player by Issac_</title>
+        <title>Youtube Player by Ayaan_</title>
 
         <style>
           html, body {
@@ -32,6 +32,8 @@
             youtubeScript.parentNode.insertBefore(tag, youtubeScript)
           
             let player = {}
+
+            const playerVars = <%- playerVars %>
           
             function onYouTubeIframeAPIReady() {
               player = new YT.Player('player', {
@@ -42,13 +44,10 @@
                   'onReady': onPlayerReady,
                   'onStateChange': onPlayerStateChange
                 },
-                playerVars: {
-                  'autoplay': 1,
-                  'playsinline': 1
-                }
+                playerVars: playerVars
               })
             }
-      
+
             function onPlayerReady(event) {
               Logger.debug("Event Received - onPlayerReady")
               
@@ -59,19 +58,21 @@
             function onPlayerStateChange(event) {
               Logger.debug("Event Received - onPlayerStateChange :", event.data)
 
-              if (event.data == YT.PlayerState.UNSTARTED) {
-                Logger.debug("Failed to Autoplay - Trying to muted-play...")
-                
-                event.target.mute()
-                event.target.playVideo()
-                
-                if (parent != self) {
-                  alert("오디오가 활성화되지 않았습니다.\n\n새로고침하고 동영상이 로드되기 전에 화면을 빠르게 터치하세요.")
+              if (playerVars.autoplay === 1) {
+                if (event.data == YT.PlayerState.UNSTARTED) {
+                  Logger.debug("Failed to Autoplay - Trying to muted-play...")
+                  
+                  event.target.mute()
+                  event.target.playVideo()
+                  
+                  if (parent != self) {
+                    alert("오디오가 활성화되지 않았습니다.\n\n새로고침하고 동영상이 로드되기 전에 화면을 빠르게 터치하세요.")
+                  }
+                } else if (event.data == YT.PlayerState.ENDED) {
+                  event.target.playVideo()
+                } else if (event.data == YT.PlayerState.PLAYING) {
+                  event.target.setPlaybackQuality("highres")
                 }
-              } else if (event.data == YT.PlayerState.ENDED) {
-                event.target.playVideo()
-              } else if (event.data == YT.PlayerState.PLAYING) {
-                event.target.setPlaybackQuality("highres")
               }
             }
           
