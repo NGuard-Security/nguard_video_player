@@ -59,16 +59,21 @@
               Logger.debug("Event Received - onPlayerStateChange :", event.data)
 
               if (playerVars.autoplay === 1 && playerVars.muted === 0) {
+                let triedAutoplay = 0
+
                 if (event.data == YT.PlayerState.UNSTARTED) {
                   Logger.debug("Failed to Autoplay - Trying to muted-play...")
                   
                   event.target.mute()
                   event.target.playVideo()
 
-                  setTimeout(() => {
-                    event.target.unMute()
-                    event.target.playVideo()
-                  }, 250)
+                  if (triedAutoplay <= 0) {
+                      setTimeout(() => {
+                        event.target.unMute()
+                        event.target.playVideo()
+                        triedAutoplay++
+                      }, 250)
+                  }
                 } else if (event.data == YT.PlayerState.PLAYING) {
                   event.target.setPlaybackQuality("highres")
                 }
