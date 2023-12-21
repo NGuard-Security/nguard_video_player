@@ -63,15 +63,20 @@
 
                 if (event.data == YT.PlayerState.UNSTARTED) {
                   Logger.debug("Failed to Autoplay - Trying to muted-play...")
-                  
-                  event.target.mute()
-                  event.target.playVideo()
 
                   if (triedAutoplay <= 0) {
+                      event.target.mute()
+                      event.target.playVideo()
+
                       setTimeout(() => {
                         event.target.unMute()
                         event.target.playVideo()
                         triedAutoplay++
+                      }, 250)
+                  } else {
+                      setTimeout(() => {
+                        event.target.mute()
+                        event.target.playVideo()
                       }, 250)
                   }
                 } else if (event.data == YT.PlayerState.PLAYING) {
