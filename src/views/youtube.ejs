@@ -44,7 +44,7 @@
                   'onReady': onPlayerReady,
                   'onStateChange': onPlayerStateChange
                 },
-                playerVars: {...playerVars, ...{ autoplay: 0, loop: 0 }} // loop과 autoplay는 커스텀하여 진행
+                playerVars: {...playerVars, ...{ muted: null, autoplay: 0, loop: 0 }} // loop과 autoplay는 커스텀하여 진행, muted는 비표준 parameter로 오류 방지를 위해 삭제
               })
             }
 
