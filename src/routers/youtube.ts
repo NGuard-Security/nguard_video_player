@@ -14,6 +14,7 @@ router.get(
       cc_lang_pref: req.query.cc_lang_pref || null,
       rel: Number(req.query.rel) === 1 ? 1 : 0 || 0,
       loop: Number(req.query.loop) === 1 ? 1 : 0 || 0,
+      muted: Number(req.query.muted) === 1 ? 1 : 0 || 0,
       controls: Number(req.query.controls) === 1 ? 1 : 0 || 1,
       autoplay: Number(req.query.autoplay) === 1 ? 1 : 0 || 1,
       disablekb: Number(req.query.disablekb) === 1 ? 1 : 0 || 0,
