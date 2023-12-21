@@ -67,11 +67,16 @@
 
                   setTimeout(() => {
                     event.target.unMute()
+                    setTimeout(() => {
+                        if (event.data == YT.PlayerState.UNSTARTED) {
+                            event.target.mute()
+                            event.target.playVideo()
+
+                            if (parent != self) {
+                                alert("오디오가 활성화되지 않았습니다.\n\n새로고침하고 동영상이 로드되기 전에 화면을 빠르게 터치하세요.")
+                            }
+                        }
                   }, 100)
-                  
-                  /*if (parent != self) {
-                    alert("오디오가 활성화되지 않았습니다.\n\n새로고침하고 동영상이 로드되기 전에 화면을 빠르게 터치하세요.")
-                  }*/
                 } else if (event.data == YT.PlayerState.PLAYING) {
                   event.target.setPlaybackQuality("highres")
                 }
