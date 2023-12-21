@@ -34,6 +34,7 @@
             let player = {}
 
             const playerVars = <%- playerVars %>
+            let triedAutoplay = 0
           
             function onYouTubeIframeAPIReady() {
               player = new YT.Player('player', {
@@ -59,8 +60,6 @@
               Logger.debug("Event Received - onPlayerStateChange :", event.data)
 
               if (playerVars.autoplay === 1 && playerVars.muted === 0) {
-                let triedAutoplay = 0
-
                 if (event.data == YT.PlayerState.UNSTARTED) {
                   Logger.debug("Failed to Autoplay - Trying to muted-play...")
 
@@ -72,6 +71,11 @@
                         event.target.unMute()
                         event.target.playVideo()
                         triedAutoplay++
+                      }, 250)
+                  } else if (triedAutoplay == 1) {
+                      setTimeout(() => {
+                        event.target.mute()
+                        event.target.playVideo()
                       }, 250)
                   } else {
                       if (location.search.includes('muted')) {
