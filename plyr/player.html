@@ -1,34 +1,24 @@
 <!DOCTYPE html>
 <html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Plyr Video Player</title>
+    <style>
+      body { padding: 0; margin: 0; overflow: hidden; }
+      .plyr { height: 100vh !important; }
+      video { object-fit: cover; }
+    </style>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/plyr/3.7.2/plyr.min.css"
+    />
+  </head>
+  <body>
+    <div class="container"></div>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Plyr Video Player</title>
-  <style>
-    body {
-      padding: 0;
-      margin: 0;
-      overflow: hidden;
-    }
-
-    .plyr {
-      height: 100vh !important;
-    }
-
-    video {
-      object-fit: cover;
-    }
-  </style>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/plyr/3.7.2/plyr.min.css" />
-</head>
-
-<body>
-  <div class="container"></div>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/plyr/3.7.2/plyr.min.js"></script>
-  <script src="../assets/js/plyr/init.js"></script>
-</body>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/plyr/3.7.2/plyr.min.js"></script>
+    <script src="../assets/js/plyr/init.js"></script>
+  </body>
 </html>
